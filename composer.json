@@ -1,15 +1,45 @@
 {
-
-    "name": "oat/taoTestRunnerTools",
+    "name": "oat-sa/extension-tao-test-runner-tools",
     "description" : "Experimental tools around the test runner",
     "type" : "tao-extension",
     "authors" : [
         {
-        "name": "Open Assessment Technologies SA"
+            "name" : "Open Assessment Technologies S.A.",
+            "homepage" : "http://www.taotesting.com"
+        },
+        {
+            "name": "Jérôme Bogaerts",
+            "role": "Developer"
+        },
+        {
+            "name": "Joel Bout",
+            "role": "Developer"
+        },
+        {
+            "name": "Bertrand Chevrier",
+            "role": "Developer"
+        },
+        {
+            "name": "Lionel Lecaque",
+            "role": "Developer"
+        },
+        {
+            "name": "Patrick Plichart",
+            "role": "Developer"
+        },
+        {
+            "name": "Dieter Raber",
+            "role": "Developer"
+        },
+        {
+            "name": "Somsack Sipasseuth",
+            "role": "Developer"
         }
     ],
     "keywords" : [
         "tao",
+        "oat",
+        "QTI",
         "computer-based-assessment"
     ],
     "homepage" : "http://www.taotesting.com",
@@ -27,5 +57,5 @@
         "psr-4" : {
             "oat\\taoTestRunnerTools\\" : ""
         }
-    } 
+    }
 }
