@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xml:base="http://www.tao.lu/Ontologies/TAODelivery.rdf#"
+    xmlns:generis="http://www.tao.lu/Ontologies/generis.rdf#"
+>
+    <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryToolRole">
+        <rdf:type rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#UserRole"/>
+        <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole"/>
+        <rdfs:label xml:lang="en-US"><![CDATA[Test Taker Tool]]></rdfs:label>
+        <rdfs:comment xml:lang="en-US"><![CDATA[The Test Taker Tool Role]]></rdfs:comment>
+    </rdf:Description>
+</rdf:RDF>

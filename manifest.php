@@ -36,8 +36,12 @@ return array(
     'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoTestRunnerToolsManager',
     'acl' => array(
         array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#taoTestRunnerToolsManager', array('ext'=>'taoTestRunnerTools')),
+        array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#DeliveryToolRole', array('ext'=>'taoTestRunnerTools', 'mod' => 'TestRunner')),
     ),
     'install' => array(
+        'rdf' => array(
+            __DIR__.DIRECTORY_SEPARATOR.'scripts'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'testrunner.rdf'
+        )
     ),
     'uninstall' => array(
     ),
