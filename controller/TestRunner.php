@@ -23,6 +23,7 @@
 
 namespace oat\taoTestRunnerTools\controller;
 
+use oat\tao\helpers\Template;
 use oat\taoDelivery\helper\Delivery as DeliveryHelper;
 use oat\taoDelivery\model\execution\DeliveryExecution;
 use oat\taoQtiTest\models\runner\session\TestSession;
@@ -47,8 +48,8 @@ class TestRunner extends \tao_actions_SinglePageModule
      */
     protected function getLayout()
     {
-        $webPath = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoTestRunnerTools')->getConstant('BASE_WWW');
-        \tao_helpers_Scriptloader::addCssFile($webPath . '/css/testrunner.css');
+        $cssFile = Template::css('testrunner.css', 'taoTestRunnerTools');
+        \tao_helpers_Scriptloader::addCssFile($cssFile);
 
         return parent::getLayout();
     }
