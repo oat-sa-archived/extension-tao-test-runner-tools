@@ -11,6 +11,27 @@
             margin: 4px;
         }
     }
+    .details {
+        padding: 4px;
+        font-size: 1.5rem;
+    }
+    .tags-list {
+        @include disableSelect();
+        @include flex-container();
+        cursor: pointer;
+
+        .list {
+            line-height: 1em;
+
+            &.single {
+                height: 1em;
+                overflow: hidden;
+            }
+            .line {
+                padding: 0 4px 4px 4px;
+            }
+        }
+    }
     .content {
         &.table {
             td {

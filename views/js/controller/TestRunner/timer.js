@@ -75,7 +75,7 @@ define([
 
             var currentRoute = urlHelper.parse(window.location.href);
             var sessionId = currentRoute.query.deliveryExecution && decodeURIComponent(currentRoute.query.deliveryExecution);
-            var dataUrl = urlHelper.route('deliveryExecutionData', 'TestRunner', 'taoTestRunnerTools', {deliveryExecution: sessionId});
+            var dataUrl = urlHelper.route('timerData', 'TestRunner', 'taoTestRunnerTools', {deliveryExecution: sessionId});
 
             var history = [];
             var last, lastId;
@@ -174,6 +174,12 @@ define([
                 window.location.href = urlHelper.route('index', 'TestRunner', 'taoTestRunnerTools');
             }
 
+            function timeLine() {
+                stopPolling();
+                loadingBar.start();
+                window.location.href = urlHelper.route('timeLine', 'TestRunner', 'taoTestRunnerTools', {deliveryExecution: sessionId});
+            }
+
             function startPolling() {
                 polling.start();
                 buttons.stop.show();
@@ -232,6 +238,14 @@ define([
                     buttons.ping.enable();
                 });
             }).hide();
+
+            buttons.timeLine = buttonFactory({
+                id: 'timeLine',
+                label: __('Time Line'),
+                type: 'info',
+                icon: 'time',
+                renderTo: $toolbar
+            }).on('click', timeLine);
 
             $content.datatable({
                 paginationStrategyTop: 'none',

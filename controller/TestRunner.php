@@ -93,7 +93,19 @@ class TestRunner extends \tao_actions_SinglePageModule
     /**
      *
      */
-    public function deliveryExecutionData()
+    public function timeLine()
+    {
+        $sessionId = $this->getRequestParameter('deliveryExecution');
+        $deliveryExecution = $this->getDeliveryExecution($sessionId);
+        $this->setData('sessionId', $sessionId);
+        $this->setData('title', $deliveryExecution->getLabel());
+        $this->composeView('test-runner', null, 'TestRunner/time-line.tpl');
+    }
+
+    /**
+     *
+     */
+    public function timerData()
     {
         $sessionId = $this->getRequestParameter('deliveryExecution');
         $deliveryExecution = $this->getDeliveryExecution($sessionId);
@@ -127,7 +139,7 @@ class TestRunner extends \tao_actions_SinglePageModule
                 $position = $this->getSessionPosition($session);
                 $identifiers = [
                     'attempt' => $attempt,
-                    'occurence' => $occurrence,
+                    'occurrence' => $occurrence,
                     'current' => $currentItemTags,
                     'item' => $session->getCurrentAssessmentItemRef()->getIdentifier(),
                     'section' => $session->getCurrentAssessmentSection()->getIdentifier(),
@@ -171,6 +183,40 @@ class TestRunner extends \tao_actions_SinglePageModule
                 'durations' => $durations,
                 'extraTime' => $extraTime,
                 'timers' => $timers,
+            ]
+        ]);
+    }
+
+    /**
+     *
+     */
+    public function timeLineData()
+    {
+        $sessionId = $this->getRequestParameter('deliveryExecution');
+        $deliveryExecution = $this->getDeliveryExecution($sessionId);
+        $session = $this->getTestSession($deliveryExecution);
+
+        $running = false;
+        $state = $this->getStateLabel($deliveryExecution->getState());
+
+        if ($session) {
+            if ($session->isRunning()) {
+                $running = true;
+                $position = $this->getSessionPosition($session);
+            } else {
+                $position = 'finished';
+            }
+        } else {
+            $position = 'starting';
+        }
+
+        $this->returnJson([
+            'success' => true,
+            'data' => [
+                'running' => $running,
+                'state' => $state,
+                'position' => $position,
+                'time' => $session->getTimer()
             ]
         ]);
     }
