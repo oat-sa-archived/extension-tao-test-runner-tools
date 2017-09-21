@@ -26,6 +26,8 @@ namespace oat\taoTestRunnerTools\controller;
 use oat\tao\helpers\Template;
 use oat\taoDelivery\helper\Delivery as DeliveryHelper;
 use oat\taoDelivery\model\execution\DeliveryExecution;
+use oat\taoDelivery\model\execution\DeliveryServerService;
+use oat\taoDelivery\model\execution\ServiceProxy;
 use oat\taoQtiTest\models\runner\session\TestSession;
 use oat\taoQtiTest\models\SessionStateService;
 use oat\taoQtiTest\models\TestSessionService;
@@ -62,7 +64,7 @@ class TestRunner extends \tao_actions_SinglePageModule
     {
         $user = \common_session_SessionManager::getSession()->getUser();
 
-        $service = $this->getServiceManager()->get(\taoDelivery_models_classes_DeliveryServerService::CONFIG_ID);
+        $service = $this->getServiceManager()->get(DeliveryServerService::SERVICE_ID);
 
         $runningDeliveries = array();
         foreach ($service->getResumableDeliveries($user) as $de) {
@@ -194,7 +196,7 @@ class TestRunner extends \tao_actions_SinglePageModule
      */
     protected function getDeliveryExecution($sessionId)
     {
-        return \taoDelivery_models_classes_execution_ServiceProxy::singleton()->getDeliveryExecution($sessionId);
+        return ServiceProxy::singleton()->getDeliveryExecution($sessionId);
     }
 
     /**
