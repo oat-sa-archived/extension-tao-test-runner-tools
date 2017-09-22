@@ -136,18 +136,23 @@ define([
                 });
             }
 
-            function back() {
+            function index() {
+                loadingBar.start();
+                window.location.href = urlHelper.route('index', 'TestRunner', 'taoTestRunnerTools');
+            }
+
+            function timer() {
                 loadingBar.start();
                 window.location.href = urlHelper.route('timer', 'TestRunner', 'taoTestRunnerTools', {deliveryExecution: sessionId});
             }
 
-            buttons.back = buttonFactory({
-                id: 'back',
-                label: __('Timers'),
+            buttons.index = buttonFactory({
+                id: 'baindexck',
+                label: __('Index'),
                 type: 'info',
                 icon: 'left',
                 renderTo: $toolbar
-            }).on('click', back);
+            }).on('click', index);
 
             buttons.reload = buttonFactory({
                 id: 'reload',
@@ -156,6 +161,14 @@ define([
                 icon: 'reload',
                 renderTo: $toolbar
             }).on('click', reload);
+
+            buttons.timer = buttonFactory({
+                id: 'timer',
+                label: __('Timers'),
+                type: 'info',
+                icon: 'time',
+                renderTo: $toolbar
+            }).on('click', timer);
 
             $content.on('click', '.tags-list', function () {
                 var $tags = $(this).closest('.tags-list');
