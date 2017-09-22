@@ -20,9 +20,11 @@
  */
 define([
     'jquery',
+    'lodash',
     'i18n',
     'moment',
     'util/url',
+    'core/encoder/time',
     'core/logger',
     'core/dataProvider/request',
     'layout/loading-bar',
@@ -30,15 +32,38 @@ define([
     'ui/button',
     'ui/datatable'
 ], function ($,
+             _,
              __,
              moment,
              urlHelper,
+             timeEncoder,
              loggerFactory,
              request,
              loadingBar,
              tagsTpl,
              buttonFactory) {
     'use strict';
+
+    /**
+     * Computes a simple hash code from a string.
+     * Port of Java’s `String.hashCode()`.
+     * @param {String} str
+     * @returns {String}
+     */
+    function hashCode(str) {
+        var hash = 0;
+        var len = str.length;
+        var i, c;
+
+        if (len > 0) {
+            for (i = 0; i < len; i++) {
+                c = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + c;
+                hash = hash & hash; // Convert to 32bit integer
+            }
+        }
+        return hash.toString(16);
+    }
 
     return {
         start: function start() {
@@ -59,11 +84,40 @@ define([
                 return request(dataUrl)
                     .then(function (data) {
                         var timePoints = data.time && data.time.timeLine || [];
+                        var ranges = {};
 
                         $details.html(__('%s - %s', data.state, data.position));
 
                         timePoints.sort(function (a, b) {
                             return a.ts - b.ts;
+                        });
+
+                        // gather timePoints by targets and ranges
+                        _.forEach(timePoints, function (timePoint) {
+                            var hash = hashCode(timePoint.tags.join(','));
+                            timePoint.hash = hash;
+
+                            ranges[hash] = ranges[hash] || {
+                                1: [],
+                                2: []
+                            };
+                            ranges[hash][timePoint.target].push(timePoint);
+                        });
+
+                        // compute duration of each range
+                        _.forEach(ranges, function (targets) {
+                            _.forEach(targets, function (range) {
+                                _.forEach(range, function (timePoint, idx) {
+                                    var previous = range[idx - 1];
+                                    if (idx % 2) {
+                                        if (timePoint.type === 2 && previous.type === 1) {
+                                            timePoint.duration = timePoint.ts - previous.ts;
+                                        } else {
+                                            timePoint.duration = -1;
+                                        }
+                                    }
+                                });
+                            });
                         });
 
                         $content.datatable('refresh', {
@@ -144,6 +198,21 @@ define([
                     transform: function formatTarget(target) {
                         return parseInt(target, 10) === 1 ? __('Client') : __('Server');
                     }
+                }, {
+                    id: 'duration',
+                    label: __('Duration'),
+                    transform: function formatDuration(duration) {
+                        if (typeof duration !== 'undefined') {
+                            if (duration < 0) {
+                                return __('Inconsistent range!');
+                            }
+                            return duration && timeEncoder.encode(duration + 's') || '-';
+                        }
+                        return '';
+                    }
+                }, {
+                    id: 'hash',
+                    label: __('Hash')
                 }, {
                     id: 'tags',
                     label: __('Tags'),
