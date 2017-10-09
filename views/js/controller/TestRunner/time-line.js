@@ -121,7 +121,8 @@ define([
                         });
 
                         $content.datatable('refresh', {
-                            data: timePoints
+                            data: timePoints,
+                            amount: timePoints.length
                         });
                     })
                     .catch(function (err) {
@@ -187,6 +188,11 @@ define([
             $content.datatable({
                 paginationStrategyTop: 'none',
                 paginationStrategyBottom: 'none',
+                status: {
+                    empty: __('No TimePoint'),
+                    available: __('TimePoint'),
+                    loading: __('Loading')
+                },
                 model: [{
                     id: 'time',
                     label: __('Time'),
