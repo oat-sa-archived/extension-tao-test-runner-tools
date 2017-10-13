@@ -96,6 +96,7 @@ define([
                         _.forEach(timePoints, function (timePoint) {
                             var hash = hashCode(timePoint.tags.join(','));
                             timePoint.hash = hash;
+                            timePoint.tags = timePoint.tags.reverse();
 
                             ranges[hash] = ranges[hash] || {
                                 1: [],
